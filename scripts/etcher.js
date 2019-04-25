@@ -1,5 +1,6 @@
 let etch = {
 	pixels: [],
+	containers: {},
 	buttons: {}
 };
 
@@ -12,10 +13,12 @@ etch.getRandomColor = function() {
 	return color;
 };
 
-etch.generateCont = function(id, parent) {
-	etch.pad = document.createElement('div');
-	etch.pad.setAttribute('id', 'etchpad');
-	etch.container.appendChild(etch.pad);
+etch.generateCont = function(id, cssClass, parent) {
+	etch.containers[id] = document.createElement('div');
+	if (id) { etch.containers[id].setAttribute('id', id); }
+	if (cssClass) { etch.containers[id].classList.add(cssClass); }
+	parent.appendChild(etch.containers[id]);
+	return etch.containers[id];
 };
 
 etch.generateButton = function(text, parent) {
@@ -28,10 +31,7 @@ etch.generateButton = function(text, parent) {
 etch.setup = function() {
 	etch.container = document.querySelector('#container');
 	etch.generateButton('clear', etch.container).addEventListener('click', etch.clearPad);
-
-	etch.pad = document.createElement('div');
-	etch.pad.setAttribute('id', 'etchpad');
-	etch.container.appendChild(etch.pad);
+	etch.generateCont('etchpad', null, etch.container);
 	etch.generatePad(16);
 };
 
