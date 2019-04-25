@@ -33,7 +33,7 @@ etch.setup = () => {
 	etch.containers.input.setAttribute('max', 500);
 	etch.containers.input.setAttribute('type', 'number');
 	etch.containers.input.setAttribute('placeholder', etch.size);
-	etch.containers.input.addEventListener('mouseout', etch.verifyInput);
+	etch.containers.input.addEventListener('focusout', etch.verifyInput);
 	etch.containers.buttonPanel.appendChild(etch.containers.input);
 
 	etch.generateButton('resize', etch.containers.buttonPanel).addEventListener('click', etch.resizePad);
@@ -101,8 +101,8 @@ etch.resizePad = () => {
 	etch.pixels = [];
 	etch.generatePad(etch.size, etch.containers.etchpad);
 };
-etch.verifyInput = () => {
-
+etch.verifyInput = event => {
+	console.log(event.target.value);
 };
 
 // PIXEL HANDLERS
