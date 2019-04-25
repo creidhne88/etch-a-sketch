@@ -1,6 +1,7 @@
 // CORE
 let etch = {
-	size: 16,
+	size: 66,
+	maxsize: 500,
 	pixels: [],
 	containers: {},
 	buttons: {},
@@ -83,6 +84,7 @@ etch.generatePad = (amount, parent) => {
 		let pixel = document.createElement('div');
 		pixel.classList.add('pixel');
 		pixel.style.backgroundColor = 'rgb(255, 255, 255)';
+		console.log(size);
 		pixel.style.width = `${size}%`;
 		pixel.style.height = `${size}%`;
 		parent.appendChild(pixel);
@@ -97,12 +99,21 @@ etch.generatePad = (amount, parent) => {
 etch.clearPad = () => { etch.pixels.map(el => { el.style.backgroundColor = '#ffffff'; }); };
 etch.randomizePad = () => { etch.pixels.map(el => { el.style.backgroundColor = etch.setColor(); }); };
 etch.resizePad = () => {
+	etch.size = etch.containers.input.value;
 	etch.pixels.map(el => { el.remove(); return null; });
 	etch.pixels = [];
 	etch.generatePad(etch.size, etch.containers.etchpad);
 };
 etch.verifyInput = event => {
-	console.log(event.target.value);
+	if (event.target.value > etch.maxsize) {
+		event.target.value = etch.maxsize;
+	}
+	else if (event.target.value < 1) {
+		event.target.value = 1;
+	}
+	else {
+		event.target.value = Math.floor(event.target.value);
+	}
 };
 
 // PIXEL HANDLERS
