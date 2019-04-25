@@ -12,12 +12,16 @@ etch.getRandomColor = function() {
 	return color;
 };
 
+etch.generateButton = function(text) {
+	etch.buttons[text] = document.createElement('button');
+	etch.buttons[text].innerHTML = text.charAt(0).toUpperCase() + text.slice(1);
+	etch.container.appendChild(etch.buttons[text]);
+	return etch.buttons[text];
+};
+
 etch.setup = function() {
 	etch.container = document.querySelector('#container');
-	etch.buttons.clear = document.createElement('button');
-	etch.buttons.clear.innerHTML = 'Clear';
-	etch.buttons.clear.addEventListener('click', etch.clearPad);
-	etch.container.appendChild(etch.buttons.clear);
+	etch.generateButton('clear').addEventListener('click', etch.clearPad);
 
 	etch.pad = document.createElement('div');
 	etch.pad.setAttribute('id', 'etchpad');
