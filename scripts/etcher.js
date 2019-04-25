@@ -79,7 +79,7 @@ etch.switch = () => {
 };
 
 etch.generatePad = (amount, parent) => {
-	const size = Math.round((100 / amount) * 100) / 100;
+	const size = Math.floor((100 / amount) * 100) / 100;
 	for (let i = 0; i < amount ** 2; i++) {
 		let pixel = document.createElement('div');
 		pixel.classList.add('pixel');
