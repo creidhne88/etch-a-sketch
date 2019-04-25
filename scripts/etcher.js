@@ -27,13 +27,22 @@ etch.setColor = rgb => {
 etch.setup = () => {
 	etch.container = document.querySelector('#container');
 	etch.generateCont('buttonPanel', 'panel', etch.container);
+
+	etch.containers.input = document.createElement('input');
+	etch.containers.input.setAttribute('min', 1);
+	etch.containers.input.setAttribute('max', 500);
+	etch.containers.input.setAttribute('type', 'number');
+	etch.containers.input.setAttribute('placeholder', etch.size);
+	etch.containers.input.addEventListener('mouseout', etch.verifyInput);
+	etch.containers.buttonPanel.appendChild(etch.containers.input);
+
 	etch.generateButton('resize', etch.containers.buttonPanel).addEventListener('click', etch.resizePad);
 	etch.generateButton('clear', etch.containers.buttonPanel).addEventListener('click', etch.clearPad);
 	etch.generateButton('random', etch.containers.buttonPanel).addEventListener('click', etch.randomizePad);
 	etch.generateButton('paint', etch.containers.buttonPanel).addEventListener('click', etch.switch);
 	etch.listener = etch.darkenPixel;
 	etch.generateCont('etchpad', null, etch.container);
-	etch.generatePad(16, etch.containers.etchpad);
+	etch.generatePad(etch.size, etch.containers.etchpad);
 };
 
 etch.generateCont = (id, cssClass, parent) => {
