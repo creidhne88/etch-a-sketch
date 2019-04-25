@@ -1,7 +1,7 @@
 // CORE
 let etch = {
-	size: 66,
-	maxsize: 500,
+	size: 16,
+	maxsize: 200,
 	pixels: [],
 	containers: {},
 	buttons: {},
