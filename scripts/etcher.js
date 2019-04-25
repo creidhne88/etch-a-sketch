@@ -84,7 +84,6 @@ etch.generatePad = (amount, parent) => {
 		let pixel = document.createElement('div');
 		pixel.classList.add('pixel');
 		pixel.style.backgroundColor = 'rgb(255, 255, 255)';
-		console.log(size);
 		pixel.style.width = `${size}%`;
 		pixel.style.height = `${size}%`;
 		parent.appendChild(pixel);
