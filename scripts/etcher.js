@@ -5,11 +5,12 @@ let etch = {
 };
 
 etch.getRandomColor = function() {
-	const letters = '0123456789ABCDEF';
-	let color = '#';
-	for (let i = 0; i < 6; i++) {
-	  color += letters[Math.floor(Math.random() * letters.length)];
+	let color = 'rgb(';
+	for (let i = 0; i < 3; i++) {
+		color += Math.floor(Math.random() * 256);
+		if (i < 2) { color += ', '; }
 	}
+	color += ')';
 	return color;
 };
 
@@ -41,7 +42,7 @@ etch.generatePad = function(amount, parent) {
 	for (let i = 0; i < amount ** 2; i++) {
 		let pixel = document.createElement('div');
 		pixel.classList.add('pixel');
-		pixel.style.backgroundColor = '#ffffff';
+		pixel.style.backgroundColor = 'rgb(255, 255, 255)';
 		pixel.style.width = `${size}%`;
 		pixel.style.height = `${size}%`;
 		parent.appendChild(pixel);
@@ -56,3 +57,9 @@ etch.generatePad = function(amount, parent) {
 
 etch.clearPad = () => { etch.pixels.map(el => { el.style.backgroundColor = '#ffffff'; }); };
 etch.randomizePad = () => { etch.pixels.map(el => { el.style.backgroundColor = etch.getRandomColor(); }); };
+etch.darkenPixel = event => {
+	if (event.target.style.backgroundColor !== 'rgb(255, 255, 255') {
+		//event.target.style.backgroundColor = 
+	}
+	else { event.target.style.backgroundColor = etch.getRandomColor(); }
+};
