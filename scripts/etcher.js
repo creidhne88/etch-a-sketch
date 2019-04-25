@@ -4,11 +4,19 @@ let etch = {
 	buttons: {}
 };
 
-etch.getRandomColor = function() {
+etch.setColor = rgb => {
 	let color = 'rgb(';
-	for (let i = 0; i < 3; i++) {
-		color += Math.floor(Math.random() * 256);
-		if (i < 2) { color += ', '; }
+	if (rgb && rgb.length === 3) {
+		for (let i = 0; i < 3; i++) {
+			color += rgb[i]
+			if (i < 2) { color += ', '; }
+		}
+	}
+	else {
+		for (let i = 0; i < 3; i++) {
+			color += Math.floor(Math.random() * 256);
+			if (i < 2) { color += ', '; }
+		}
 	}
 	color += ')';
 	return color;
@@ -49,17 +57,21 @@ etch.generatePad = function(amount, parent) {
 		etch.pixels.push(pixel);
 	}
 	etch.pixels.map(el => {
-		el.addEventListener('mouseover', event => {
-			event.target.style.backgroundColor = etch.getRandomColor();
-		});
+		el.addEventListener('mouseover', etch.darkenPixel);
 	});
 };
 
 etch.clearPad = () => { etch.pixels.map(el => { el.style.backgroundColor = '#ffffff'; }); };
-etch.randomizePad = () => { etch.pixels.map(el => { el.style.backgroundColor = etch.getRandomColor(); }); };
+etch.randomizePad = () => { etch.pixels.map(el => { el.style.backgroundColor = etch.setColor(); }); };
+etch.paintPixel = event => { event.target.style.backgroundColor = 'rgb(0, 0, 0)'; };
 etch.darkenPixel = event => {
-	if (event.target.style.backgroundColor !== 'rgb(255, 255, 255') {
-		//event.target.style.backgroundColor = 
+	let rgb = event.target.style.backgroundColor;
+	console.log(rgb);
+	if (rgb === 'rgb(255, 255, 255)' || rgb === 'rgb(0, 0, 0)') {
+		event.target.style.backgroundColor = etch.setColor();
 	}
-	else { event.target.style.backgroundColor = etch.getRandomColor(); }
+	else {
+		rgb = rgb.slice(4, rgb.length - 1).split(', ').map(el => parseInt(el)).map(el => el - 25);
+		event.target.style.backgroundColor = etch.setColor(rgb);
+	}
 };
