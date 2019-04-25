@@ -1,14 +1,14 @@
 let etch = {
 	pixels: [],
 	containers: {},
-	buttons: {}
+	buttons: {},
 };
 
 etch.setColor = rgb => {
 	let color = 'rgb(';
 	if (rgb && rgb.length === 3) {
 		for (let i = 0; i < 3; i++) {
-			color += rgb[i]
+			color += rgb[i];
 			if (i < 2) { color += ', '; }
 		}
 	}
@@ -27,7 +27,9 @@ etch.setup = function() {
 	etch.generateCont('buttonPanel', 'panel', etch.container);
 	etch.generateButton('clear', etch.containers.buttonPanel).addEventListener('click', etch.clearPad);
 	etch.generateButton('random', etch.containers.buttonPanel).addEventListener('click', etch.randomizePad);
-	etch.generatePad(16, etch.generateCont('etchpad', null, etch.container));
+	etch.generateButton('paint', etch.containers.buttonPanel).addEventListener('click', etch.switch);
+	etch.listener = etch.darkenPixel;
+	etch.generatePad(16, etch.listener, etch.generateCont('etchpad', null, etch.container));
 };
 
 etch.generateCont = function(id, cssClass, parent) {
@@ -45,7 +47,24 @@ etch.generateButton = function(text, parent) {
 	return etch.buttons[text];
 };
 
-etch.generatePad = function(amount, parent) {
+etch.switch = function() {
+	etch.pixels.map(el => {
+		el.removeEventListener('mouseover', etch.listener);
+	});
+	if (etch.listener === etch.darkenPixel) {
+		etch.listener = etch.paintPixel;
+		etch.buttons.paint.innerHTML = 'Darken';
+	}
+	else {
+		etch.listener = etch.darkenPixel;
+		etch.buttons.paint.innerHTML = 'Paint';
+	}
+	etch.pixels.map(el => {
+		el.addEventListener('mouseover', etch.listener);
+	});
+};
+
+etch.generatePad = function(amount, listener, parent) {
 	const size = Math.round((100 / amount) * 100) / 100;
 	for (let i = 0; i < amount ** 2; i++) {
 		let pixel = document.createElement('div');
@@ -57,7 +76,7 @@ etch.generatePad = function(amount, parent) {
 		etch.pixels.push(pixel);
 	}
 	etch.pixels.map(el => {
-		el.addEventListener('mouseover', etch.darkenPixel);
+		el.addEventListener('mouseover', listener);
 	});
 };
 
@@ -66,7 +85,6 @@ etch.randomizePad = () => { etch.pixels.map(el => { el.style.backgroundColor = e
 etch.paintPixel = event => { event.target.style.backgroundColor = 'rgb(0, 0, 0)'; };
 etch.darkenPixel = event => {
 	let rgb = event.target.style.backgroundColor;
-	console.log(rgb);
 	if (rgb === 'rgb(255, 255, 255)' || rgb === 'rgb(0, 0, 0)') {
 		event.target.style.backgroundColor = etch.setColor();
 	}
