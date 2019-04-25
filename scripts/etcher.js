@@ -30,13 +30,14 @@ etch.generateButton = function(text, parent) {
 
 etch.setup = function() {
 	etch.container = document.querySelector('#container');
-	etch.generateButton('clear', etch.container).addEventListener('click', etch.clearPad);
-	etch.generateCont('etchpad', null, etch.container);
-	etch.generatePad(16);
+	etch.generateCont('buttonPanel', 'panel', etch.container);
+	etch.generateButton('clear', etch.containers.buttonPanel).addEventListener('click', etch.clearPad);
+	etch.generateButton('clear', etch.containers.buttonPanel).addEventListener('click', etch.clearPad);
+	etch.generateButton('clear', etch.containers.buttonPanel).addEventListener('click', etch.clearPad);
+	etch.generatePad(16, etch.generateCont('etchpad', null, etch.container));
 };
 
-etch.generatePad = function(amount) {
-	etch.pad = document.querySelector('#etchpad');
+etch.generatePad = function(amount, parent) {
 	const size = Math.round((100 / amount) * 100) / 100;
 	for (let i = 0; i < amount ** 2; i++) {
 		let pixel = document.createElement('div');
@@ -44,7 +45,7 @@ etch.generatePad = function(amount) {
 		pixel.style.backgroundColor = etch.getRandomColor();
 		pixel.style.width = `${size}%`;
 		pixel.style.height = `${size}%`;
-		etch.pad.appendChild(pixel);
+		parent.appendChild(pixel);
 		etch.pixels.push(pixel);
 	}
 	etch.pixels.map(el => {
