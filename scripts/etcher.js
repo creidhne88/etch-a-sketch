@@ -34,7 +34,8 @@ etch.setup = () => {
 	etch.generateButton('random', etch.containers.buttonPanel).addEventListener('click', etch.randomizePad);
 	etch.generateButton('paint', etch.containers.buttonPanel).addEventListener('click', etch.switch);
 	etch.listener = etch.darkenPixel;
-	etch.generatePad(16, etch.generateCont('etchpad', null, etch.container));
+	etch.generateCont('etchpad', null, etch.container);
+	etch.generatePad(16, etch.containers.etchpad);
 };
 
 etch.generateCont = (id, cssClass, parent) => {
