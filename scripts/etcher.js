@@ -1,3 +1,7 @@
+/*
+ *  Core
+ */
+
 let etch = {
 	pixels: [],
 	containers: {},
@@ -22,17 +26,18 @@ etch.setColor = rgb => {
 	return color;
 };
 
-etch.setup = function() {
+etch.setup = () => {
 	etch.container = document.querySelector('#container');
 	etch.generateCont('buttonPanel', 'panel', etch.container);
+	etch.generateButton('resize', etch.containers.buttonPanel).addEventListener('click', etch.resizePad);
 	etch.generateButton('clear', etch.containers.buttonPanel).addEventListener('click', etch.clearPad);
 	etch.generateButton('random', etch.containers.buttonPanel).addEventListener('click', etch.randomizePad);
 	etch.generateButton('paint', etch.containers.buttonPanel).addEventListener('click', etch.switch);
 	etch.listener = etch.darkenPixel;
-	etch.generatePad(16, etch.listener, etch.generateCont('etchpad', null, etch.container));
+	etch.generatePad(16, etch.generateCont('etchpad', null, etch.container));
 };
 
-etch.generateCont = function(id, cssClass, parent) {
+etch.generateCont = (id, cssClass, parent) => {
 	etch.containers[id] = document.createElement('div');
 	if (id) { etch.containers[id].setAttribute('id', id); }
 	if (cssClass) { etch.containers[id].classList.add(cssClass); }
@@ -40,14 +45,14 @@ etch.generateCont = function(id, cssClass, parent) {
 	return etch.containers[id];
 };
 
-etch.generateButton = function(text, parent) {
+etch.generateButton = (text, parent) => {
 	etch.buttons[text] = document.createElement('button');
 	etch.buttons[text].innerHTML = text.charAt(0).toUpperCase() + text.slice(1);
 	parent.appendChild(etch.buttons[text]);
 	return etch.buttons[text];
 };
 
-etch.switch = function() {
+etch.switch = () => {
 	etch.pixels.map(el => {
 		el.removeEventListener('mouseover', etch.listener);
 	});
@@ -64,7 +69,7 @@ etch.switch = function() {
 	});
 };
 
-etch.generatePad = function(amount, listener, parent) {
+etch.generatePad = (amount, parent) => {
 	const size = Math.round((100 / amount) * 100) / 100;
 	for (let i = 0; i < amount ** 2; i++) {
 		let pixel = document.createElement('div');
@@ -76,12 +81,27 @@ etch.generatePad = function(amount, listener, parent) {
 		etch.pixels.push(pixel);
 	}
 	etch.pixels.map(el => {
-		el.addEventListener('mouseover', listener);
+		el.addEventListener('mouseover', etch.listener);
 	});
 };
 
+
+/*
+*  Button handlers
+*/
+
 etch.clearPad = () => { etch.pixels.map(el => { el.style.backgroundColor = '#ffffff'; }); };
 etch.randomizePad = () => { etch.pixels.map(el => { el.style.backgroundColor = etch.setColor(); }); };
+etch.resizePad = () => {
+	etch.pixels.map(el => { el.remove(); return null; });
+	etch.pixels = [];
+	etch.generatePad(30, etch.containers.etchpad);
+};
+
+/*
+ *  Pixel handlers
+ */
+
 etch.paintPixel = event => { event.target.style.backgroundColor = 'rgb(0, 0, 0)'; };
 etch.darkenPixel = event => {
 	let rgb = event.target.style.backgroundColor;
