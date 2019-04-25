@@ -1,8 +1,6 @@
-/*
- *  Core
- */
-
+// CORE
 let etch = {
+	size: 16,
 	pixels: [],
 	containers: {},
 	buttons: {},
@@ -86,23 +84,19 @@ etch.generatePad = (amount, parent) => {
 	});
 };
 
-
-/*
-*  Button handlers
-*/
-
+// BUTTON/FIELD HANDLERS
 etch.clearPad = () => { etch.pixels.map(el => { el.style.backgroundColor = '#ffffff'; }); };
 etch.randomizePad = () => { etch.pixels.map(el => { el.style.backgroundColor = etch.setColor(); }); };
 etch.resizePad = () => {
 	etch.pixels.map(el => { el.remove(); return null; });
 	etch.pixels = [];
-	etch.generatePad(30, etch.containers.etchpad);
+	etch.generatePad(etch.size, etch.containers.etchpad);
+};
+etch.verifyInput = () => {
+
 };
 
-/*
- *  Pixel handlers
- */
-
+// PIXEL HANDLERS
 etch.paintPixel = event => { event.target.style.backgroundColor = 'rgb(0, 0, 0)'; };
 etch.darkenPixel = event => {
 	let rgb = event.target.style.backgroundColor;
