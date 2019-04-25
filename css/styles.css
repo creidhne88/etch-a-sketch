@@ -19,7 +19,6 @@ div#etchpad {
 	align-content: flex-start;
 	width: 500px;
 	height: 500px;
-	border: 1px solid #000000;
 	margin-left: auto;
 	margin-right: auto;
 }
