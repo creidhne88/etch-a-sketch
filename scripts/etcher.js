@@ -13,27 +13,11 @@ etch.getRandomColor = function() {
 	return color;
 };
 
-etch.generateCont = function(id, cssClass, parent) {
-	etch.containers[id] = document.createElement('div');
-	if (id) { etch.containers[id].setAttribute('id', id); }
-	if (cssClass) { etch.containers[id].classList.add(cssClass); }
-	parent.appendChild(etch.containers[id]);
-	return etch.containers[id];
-};
-
-etch.generateButton = function(text, parent) {
-	etch.buttons[text] = document.createElement('button');
-	etch.buttons[text].innerHTML = text.charAt(0).toUpperCase() + text.slice(1);
-	parent.appendChild(etch.buttons[text]);
-	return etch.buttons[text];
-};
-
 etch.setup = function() {
 	etch.container = document.querySelector('#container');
 	etch.generateCont('buttonPanel', 'panel', etch.container);
 	etch.generateButton('clear', etch.containers.buttonPanel).addEventListener('click', etch.clearPad);
-	etch.generateButton('clear', etch.containers.buttonPanel).addEventListener('click', etch.clearPad);
-	etch.generateButton('clear', etch.containers.buttonPanel).addEventListener('click', etch.clearPad);
+	etch.generateButton('random', etch.containers.buttonPanel).addEventListener('click', etch.randomizePad);
 	etch.generatePad(16, etch.generateCont('etchpad', null, etch.container));
 };
 
@@ -55,8 +39,20 @@ etch.generatePad = function(amount, parent) {
 	});
 };
 
-etch.clearPad = function() {
-	if (etch.pixels.length !== 0) {
-		etch.pixels.map(el => { el.style.backgroundColor = '#ffffff'; });
-	}
+etch.generateCont = function(id, cssClass, parent) {
+	etch.containers[id] = document.createElement('div');
+	if (id) { etch.containers[id].setAttribute('id', id); }
+	if (cssClass) { etch.containers[id].classList.add(cssClass); }
+	parent.appendChild(etch.containers[id]);
+	return etch.containers[id];
 };
+
+etch.generateButton = function(text, parent) {
+	etch.buttons[text] = document.createElement('button');
+	etch.buttons[text].innerHTML = text.charAt(0).toUpperCase() + text.slice(1);
+	parent.appendChild(etch.buttons[text]);
+	return etch.buttons[text];
+};
+
+etch.clearPad = () => { etch.pixels.map(el => { el.style.backgroundColor = '#ffffff'; }); };
+etch.randomizePad = () => { etch.pixels.map(el => { el.style.backgroundColor = etch.getRandomColor(); }); };
